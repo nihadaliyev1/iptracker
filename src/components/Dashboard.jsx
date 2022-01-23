@@ -1,31 +1,21 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import { connect } from "react-redux";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(motion.div)`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 1.5rem;
   padding: 3.2rem 4.3rem;
   position: relative;
   z-index: 1000000000000000;
   top: 6rem;
-  transition: 0.7s all;
-  opacity: 0;
-  transform: translateY(-20rem);
-  ${({ loading }) => {
-    if (loading === false) {
-      return css`
-        opacity: 1;
-        transform: translateY(0rem);
-      `;
-    }
   }};
 
   @media only screen and (max-width: 820px) {
-    pad @media only screen and (max-width: 880px) {
+    @media only screen and (max-width: 880px) {
       padding: 3rem 2.3rem;
     }
-    ding: 3rem 1.8rem;
+    padding: 3rem 1.8rem;
   }
   @media only screen and (max-width: 770px) {
     padding: 2.4rem 0;
@@ -119,41 +109,59 @@ const ItemDescription = styled.p`
   }
 `;
 
-const Dashboard = ({ location, loading }) => {
-  return (
-    <ContentWrapper loading={loading}>
-      {location && (
-        <InfoList>
-          <ListItem>
-            <ItemTitle>IP Address</ItemTitle>
-            <ItemDescription>{location.ip}</ItemDescription>
-          </ListItem>
-          <ListItem>
-            <ItemTitle>Location</ItemTitle>
-            <ItemDescription>
-              {location.location.city}, {location.location.region},
-              {location.location.postalCode}
-            </ItemDescription>
-          </ListItem>
-          <ListItem>
-            <ItemTitle>Timezone</ItemTitle>
-            <ItemDescription>UTC {location.location.timezone}</ItemDescription>
-          </ListItem>
-          <ListItem>
-            <ItemTitle>ISP</ItemTitle>
-            <ItemDescription>{location.isp}</ItemDescription>
-          </ListItem>
-        </InfoList>
-      )}
-    </ContentWrapper>
-  );
+const dashboardVariants = {
+  hidden: {
+    y: -200,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.4,
+      type: "spring",
+      mass: 0.5,
+      stiffness: 70,
+    },
+  },
 };
 
-const mapStateToProps = (state) => {
-  return {
-    location: state.location,
-    loading: state.loading,
-  };
+const Dashboard = ({ data }) => {
+  if (!data) {
+    return null;
+  } else {
+    return (
+      <ContentWrapper
+        variants={dashboardVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {data.location && (
+          <InfoList>
+            <ListItem>
+              <ItemTitle>IP Address</ItemTitle>
+              <ItemDescription>{data.ip}</ItemDescription>
+            </ListItem>
+            <ListItem>
+              <ItemTitle>Location</ItemTitle>
+              <ItemDescription>
+                {data.location.city}, {data.location.region},
+                {data.location.postalCode}
+              </ItemDescription>
+            </ListItem>
+            <ListItem>
+              <ItemTitle>Timezone</ItemTitle>
+              <ItemDescription>UTC {data.location.timezone}</ItemDescription>
+            </ListItem>
+            <ListItem>
+              <ItemTitle>ISP</ItemTitle>
+              <ItemDescription>{data.isp}</ItemDescription>
+            </ListItem>
+          </InfoList>
+        )}
+      </ContentWrapper>
+    );
+  }
 };
 
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

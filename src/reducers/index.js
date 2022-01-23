@@ -1,10 +1,9 @@
-import { combineReducers } from "redux";
-import locationReducer from "./locationReducer";
-import LoaderReducer from "./LoaderReducer";
+import ipReducer from "../slices/ipSlice";
+import { geoApi } from "../actions";
 
-const reducers = combineReducers({
-  location: locationReducer,
-  loading: LoaderReducer,
-});
+const reducers = {
+  [geoApi.reducerPath]: geoApi.reducer,
+  ip: ipReducer,
+};
 
 export default reducers;

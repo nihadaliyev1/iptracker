@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import styled, { keyframes, css } from "styled-components";
 import Container from "../helpers/Container";
-import { Field, Formik, Form } from "formik";
+import { Field, Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
 import Dashboard from "./Dashboard";
-import { addLoader, removeLoader, setCoordinates } from "../actions";
-import { connect } from "react-redux";
+import { useSetCoordinatesQuery } from "../actions";
+import AppContext from "../context/AppContext";
 
 const initialValues = {
   ip: "",
 };
 
-const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+const ipRegex =
+  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 const validationSchema = Yup.object({
   ip: Yup.string()
@@ -185,11 +186,15 @@ const Formm = styled(Form)`
   margin-top: 3rem;
 `;
 
-const Header = ({ setCoordinates, location, addLoader, removeLoader }) => {
-  const onSubmit = async (values) => {
-    addLoader();
-    await setCoordinates(values.ip);
-    removeLoader();
+const Header = () => {
+  const { skip, setSkip, ip, setIp } = useContext(AppContext);
+  const { data } = useSetCoordinatesQuery(ip, {
+    skip,
+  });
+
+  const onSubmit = (values) => {
+    setIp(values.ip);
+    setSkip(false);
   };
   return (
     <Headerr>
@@ -211,20 +216,10 @@ const Header = ({ setCoordinates, location, addLoader, removeLoader }) => {
             );
           }}
         </Formik>
-        <Dashboard />
+        <Dashboard data={data} />
       </Container>
     </Headerr>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    location: state.location,
-  };
-};
-
-export default connect(mapStateToProps, {
-  setCoordinates,
-  addLoader,
-  removeLoader,
-})(Header);
+export default Header;

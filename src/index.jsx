@@ -5,16 +5,18 @@ import theme from "./design/Theme";
 import App from "./components/App";
 import GlobalStyles from "./design/GlobalStyles";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
 import reducers from "./reducers";
+import { geoApi } from "./actions";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = configureStore({
+  reducer: reducers,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(geoApi.middleware),
+});
 
 ReactDOM.render(
-  <Provider
-    store={createStore(reducers, composeEnhancers(applyMiddleware(thunk)))}
-  >
+  <Provider store={store}>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <App />
