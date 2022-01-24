@@ -20,10 +20,13 @@ const Header = () => {
   const { data, isError, error } = useSetCoordinatesQuery(ip, {
     skip,
   });
+
   const onSubmit = (values) => {
     setIp(values.ip);
     setSkip(false);
   };
+
+  console.log(process.env);
 
   useEffect(() => {
     if (isError) toast.error(error.data.messages, { toastId: 3 });

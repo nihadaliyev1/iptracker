@@ -8,6 +8,7 @@ export const ContentWrapper = styled(motion.div)`
   position: relative;
   z-index: 1000000000000000;
   top: 6rem;
+
   }};
 
   @media only screen and (max-width: 820px) {
@@ -23,7 +24,6 @@ export const ContentWrapper = styled(motion.div)`
     margin: 0 auto;
   }
 `;
-
 export const InfoList = styled.ul`
   display: flex;
   justify-content: space-between;
@@ -56,6 +56,8 @@ export const ListItem = styled.li`
     }
 
   }
+
+  
 
   &:not(:last-child)::after {
     content: "";

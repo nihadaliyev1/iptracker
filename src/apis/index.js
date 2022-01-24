@@ -12,7 +12,7 @@ export const geoApi = createApi({
         url: "",
         method: "GET",
         params: {
-          apiKey: "at_7X3KxnKWZszJ0OsfJ9dK1kEaLUGsZ",
+          apiKey: process.env.REACT_APP_API_KEY,
           ipAddress: ip,
         },
       }),
