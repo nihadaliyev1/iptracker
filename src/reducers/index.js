@@ -1,9 +1,7 @@
-import ipReducer from "../slices/ipSlice";
-import { geoApi } from "../actions";
+import { geoApi } from "../apis";
 
 const reducers = {
   [geoApi.reducerPath]: geoApi.reducer,
-  ip: ipReducer,
 };
 
 export default reducers;

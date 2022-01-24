@@ -5,7 +5,7 @@ import AppContext from "../context/AppContext";
 import "leaflet/dist/leaflet.css";
 import Marker from "react-leaflet-enhanced-marker";
 import Animation from "../images/Magnify-1s-200px.svg";
-import { useSetCoordinatesQuery } from "../actions";
+import { useSetCoordinatesQuery } from "../apis";
 
 const Section = styled.section`
   height: 65vh;

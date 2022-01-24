@@ -7,7 +7,7 @@ import GlobalStyles from "./design/GlobalStyles";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import reducers from "./reducers";
-import { geoApi } from "./actions";
+import { geoApi } from "./apis";
 
 const store = configureStore({
   reducer: reducers,

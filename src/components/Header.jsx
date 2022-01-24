@@ -4,7 +4,7 @@ import Container from "../helpers/Container";
 import { Field, Formik, Form } from "formik";
 import * as Yup from "yup";
 import Dashboard from "./Dashboard";
-import { useSetCoordinatesQuery } from "../actions";
+import { useSetCoordinatesQuery } from "../apis";
 import AppContext from "../context/AppContext";
 import { toast } from "react-toastify";
 
