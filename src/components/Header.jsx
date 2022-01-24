@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import styled, { keyframes, css } from "styled-components";
 import Container from "../helpers/Container";
-import { Field, Formik, Form, useFormikContext } from "formik";
+import { Field, Formik, Form } from "formik";
 import * as Yup from "yup";
 import Dashboard from "./Dashboard";
 import { useSetCoordinatesQuery } from "../actions";
 import AppContext from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const initialValues = {
   ip: "",
@@ -16,8 +17,16 @@ const ipRegex =
 
 const validationSchema = Yup.object({
   ip: Yup.string()
-    .required("The IP adress is required")
-    .matches(ipRegex, "Invalid Ip"),
+    .required(() => {
+      return toast.error("IPv4 or IPv6 address is required", {
+        toastId: 1,
+      });
+    })
+    .matches(ipRegex, () => {
+      return toast.error("Please, input correct IPv4 or IPv6 address.", {
+        toastId: 2,
+      });
+    }),
 });
 
 const FormWrapper = styled.div`
@@ -139,12 +148,13 @@ const Input = styled(Field).attrs({
   line-height: 2.1rem;
 
   ${({ formik }) => {
-    if (formik.errors.ip && formik.touched.ip) {
+    if (formik.errors.ip) {
       return css`
         animation-name: ${errorAnimation};
         animation-duration: 0.5s;
         animation-timing-function: ease-in;
-        border: 2px solid #ff0033;
+        border: 2px solid ${({ theme }) => theme.colors.errorred2};
+        color: ${({ theme }) => theme.colors.errorred};
       `;
     } else {
       return null;
@@ -188,14 +198,18 @@ const Formm = styled(Form)`
 
 const Header = () => {
   const { skip, setSkip, ip, setIp } = useContext(AppContext);
-  const { data } = useSetCoordinatesQuery(ip, {
+  const { data, isError, error } = useSetCoordinatesQuery(ip, {
     skip,
   });
-
+  //check.error.data.messages
   const onSubmit = (values) => {
     setIp(values.ip);
     setSkip(false);
   };
+
+  useEffect(() => {
+    if (isError) toast.error(error.data.messages, { toastId: 3 });
+  }, [isError]);
   return (
     <Headerr>
       <Container>
@@ -204,6 +218,8 @@ const Header = () => {
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           initialValues={initialValues}
+          validateOnBlur={false}
+          validateOnChange={false}
         >
           {(formik) => {
             return (
