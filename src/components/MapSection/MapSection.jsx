@@ -1,46 +1,11 @@
 import React, { useContext } from "react";
-import styled, { css } from "styled-components";
-import { MapContainer, TileLayer, MapConsumer } from "react-leaflet";
-import AppContext from "../context/AppContext";
+import { TileLayer, MapConsumer } from "react-leaflet";
+import AppContext from "../../context/AppContext";
 import "leaflet/dist/leaflet.css";
 import Marker from "react-leaflet-enhanced-marker";
-import Animation from "../images/Magnify-1s-200px.svg";
-import { useSetCoordinatesQuery } from "../apis";
-
-const Section = styled.section`
-  height: 65vh;
-  position: relative;
-
-  ${(props) =>
-    props.$loading &&
-    css`
-      &::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        left: 0;
-        top: 0;
-        z-index: 10000000000;
-      }
-    `}
-`;
-
-const Map = styled(MapContainer)`
-  height: 100%;
-  width: 100%;
-`;
-
-const Spinner = styled.object.attrs({
-  type: "image/svg+xml",
-})`
-  position: absolute;
-  z-index: 100000000000;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-`;
+import Animation from "../../images/Magnify-1s-200px.svg";
+import { useSetCoordinatesQuery } from "../../apis";
+import { Section, Map, Spinner } from "./MapSectionStyles";
 
 const MapSection = () => {
   const { skip, ip } = useContext(AppContext);
@@ -72,7 +37,7 @@ const MapSection = () => {
             <Marker
               icon={
                 <img
-                  src={require("../images/icon-location.svg").default}
+                  src={require("../../images/icon-location.svg").default}
                   style={{ width: "100" }}
                   alt="location"
                 />

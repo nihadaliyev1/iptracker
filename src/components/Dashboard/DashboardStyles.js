@@ -1,8 +1,7 @@
-import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-const ContentWrapper = styled(motion.div)`
+export const ContentWrapper = styled(motion.div)`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 1.5rem;
   padding: 3.2rem 4.3rem;
@@ -25,7 +24,7 @@ const ContentWrapper = styled(motion.div)`
   }
 `;
 
-const InfoList = styled.ul`
+export const InfoList = styled.ul`
   display: flex;
   justify-content: space-between;
   @media only screen and (max-width: 770px) {
@@ -34,7 +33,7 @@ const InfoList = styled.ul`
   }
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   display: flex;
   flex-direction: column;
   padding: 0 3.2rem;
@@ -77,7 +76,7 @@ const ListItem = styled.li`
 
 `;
 
-const ItemTitle = styled.h3`
+export const ItemTitle = styled.h3`
   font-size: 1.2rem;
   line-height: 1.4rem;
   letter-spacing: 1.75px;
@@ -93,7 +92,7 @@ const ItemTitle = styled.h3`
   }
 `;
 
-const ItemDescription = styled.p`
+export const ItemDescription = styled.p`
   font-weight: 500;
   font-size: 2.6rem;
   line-height: 3rem;
@@ -108,60 +107,3 @@ const ItemDescription = styled.p`
     font-size: 2rem;
   }
 `;
-
-const dashboardVariants = {
-  hidden: {
-    y: -200,
-    opacity: 0,
-  },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      type: "spring",
-      mass: 0.5,
-      stiffness: 70,
-    },
-  },
-};
-
-const Dashboard = ({ data }) => {
-  if (!data) {
-    return null;
-  } else {
-    return (
-      <ContentWrapper
-        variants={dashboardVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {data.location && (
-          <InfoList>
-            <ListItem>
-              <ItemTitle>IP Address</ItemTitle>
-              <ItemDescription>{data.ip}</ItemDescription>
-            </ListItem>
-            <ListItem>
-              <ItemTitle>Location</ItemTitle>
-              <ItemDescription>
-                {data.location.city}, {data.location.region},
-                {data.location.postalCode}
-              </ItemDescription>
-            </ListItem>
-            <ListItem>
-              <ItemTitle>Timezone</ItemTitle>
-              <ItemDescription>UTC {data.location.timezone}</ItemDescription>
-            </ListItem>
-            <ListItem>
-              <ItemTitle>ISP</ItemTitle>
-              <ItemDescription>{data.isp}</ItemDescription>
-            </ListItem>
-          </InfoList>
-        )}
-      </ContentWrapper>
-    );
-  }
-};
-
-export default Dashboard;

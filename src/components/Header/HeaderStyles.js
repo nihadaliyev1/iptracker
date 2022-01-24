@@ -1,35 +1,7 @@
-import React, { useContext, useEffect } from "react";
 import styled, { keyframes, css } from "styled-components";
-import Container from "../helpers/Container";
-import { Field, Formik, Form } from "formik";
-import * as Yup from "yup";
-import Dashboard from "./Dashboard";
-import { useSetCoordinatesQuery } from "../apis";
-import AppContext from "../context/AppContext";
-import { toast } from "react-toastify";
+import { Field, Form } from "formik";
 
-const initialValues = {
-  ip: "",
-};
-
-const ipRegex =
-  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-
-const validationSchema = Yup.object({
-  ip: Yup.string()
-    .required(() => {
-      return toast.error("IPv4 or IPv6 address is required", {
-        toastId: 1,
-      });
-    })
-    .matches(ipRegex, () => {
-      return toast.error("Please, input correct IPv4 or IPv6 address.", {
-        toastId: 2,
-      });
-    }),
-});
-
-const FormWrapper = styled.div`
+export const FormWrapper = styled.div`
   width: 50%;
   display: flex;
   @media only screen and (max-width: 770px) {
@@ -46,15 +18,15 @@ const FormWrapper = styled.div`
   }
 `;
 
-const Headerr = styled.header`
+export const Headerr = styled.header`
   height: 35vh;
   padding-top: 3.5rem;
-  background-image: url(${require("../images/pattern-bg.png").default});
+  background-image: url(${require("../../images/pattern-bg.png").default});
   background-repeat: no-repeat;
   background-size: cover;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-weight: 500;
   font-size: 3.2rem;
   line-height: 3rem;
@@ -66,7 +38,7 @@ const Title = styled.h1`
   }
 `;
 
-const SubmitButton = styled.button.attrs({ type: "submit" })`
+export const SubmitButton = styled.button.attrs({ type: "submit" })`
   width: 10.4%;
   border-radius: 0px 1.5rem 1.5rem 0px;
   border: none;
@@ -82,7 +54,7 @@ const SubmitButton = styled.button.attrs({ type: "submit" })`
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    background-image: url(${require("../images/icon-arrow.svg").default});
+    background-image: url(${require("../../images/icon-arrow.svg").default});
     width: 1.2rem;
     height: 1.5rem;
     background-repeat: no-repeat;
@@ -100,7 +72,7 @@ const SubmitButton = styled.button.attrs({ type: "submit" })`
   }
 `;
 
-const errorAnimation = keyframes`
+export const errorAnimation = keyframes`
   0% {
     transform: translateX(0px);
     timing-function: ease-in;
@@ -136,7 +108,7 @@ const errorAnimation = keyframes`
 }
 `;
 
-const Input = styled(Field).attrs({
+export const Input = styled(Field).attrs({
   placeholder: "Search for any IP address or domain",
 })`
   width: 89.5%;
@@ -190,52 +162,8 @@ const Input = styled(Field).attrs({
   }
 `;
 
-const Formm = styled(Form)`
+export const Formm = styled(Form)`
   display: flex;
   justify-content: center;
   margin-top: 3rem;
 `;
-
-const Header = () => {
-  const { skip, setSkip, ip, setIp } = useContext(AppContext);
-  const { data, isError, error } = useSetCoordinatesQuery(ip, {
-    skip,
-  });
-  //check.error.data.messages
-  const onSubmit = (values) => {
-    setIp(values.ip);
-    setSkip(false);
-  };
-
-  useEffect(() => {
-    if (isError) toast.error(error.data.messages, { toastId: 3 });
-  }, [isError]);
-  return (
-    <Headerr>
-      <Container>
-        <Title>IP Address Tracker</Title>
-        <Formik
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          initialValues={initialValues}
-          validateOnBlur={false}
-          validateOnChange={false}
-        >
-          {(formik) => {
-            return (
-              <Formm>
-                <FormWrapper>
-                  <Input formik={formik} name="ip" id="ip" />
-                  <SubmitButton />
-                </FormWrapper>
-              </Formm>
-            );
-          }}
-        </Formik>
-        <Dashboard data={data} />
-      </Container>
-    </Headerr>
-  );
-};
-
-export default Header;

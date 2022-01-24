@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import MapSection from "./MapSection";
+import Header from "./Header/Header";
+import MapSection from "./MapSection/MapSection";
 import AppContext from "../context/AppContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
