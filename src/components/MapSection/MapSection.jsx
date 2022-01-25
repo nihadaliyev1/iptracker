@@ -10,7 +10,7 @@ import { Section, Map, Spinner } from "./MapSectionStyles";
 const MapSection = () => {
   const { skip, ip } = useContext(AppContext);
   const { data, isLoading } = useSetCoordinatesQuery(ip, { skip });
-  console.log(isLoading);
+
   return (
     <Section $loading={isLoading}>
       {isLoading && <Spinner data={Animation}>Spinner</Spinner>}

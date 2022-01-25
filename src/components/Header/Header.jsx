@@ -26,8 +26,6 @@ const Header = () => {
     setSkip(false);
   };
 
-  console.log(process.env);
-
   useEffect(() => {
     if (isError) toast.error(error.data.messages, { toastId: 3 });
   }, [isError, error?.data?.messages]);
